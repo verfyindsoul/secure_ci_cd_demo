@@ -1,0 +1,25 @@
+name: DevSecOps Security Scan
+
+on:
+	push:
+		branches: [ main ]
+	pull_request:
+		branches: [ main ]
+
+jobs:
+	trivy-scan:
+		name: Trivy Vulnerability Scan
+		runs-on: ubuntu-lastest
+		steps:
+		# 1. Скачивание кода в окружение GitHub
+		- name: Checkout code
+		  uses: actions/checkout@4
+
+		# 2. Запуск инструмента без-ности Trivy для проверки зависимостей
+		- name: Run Trivy vulnerability scanner in repo mode
+		  uses:aquasecurity/trivy-action@0.16.0
+		  with:
+		  	scan-type: 'fs'
+		  	security-checks 'vuln'
+		  	severity: 'CRITICAL, HIGH'
+		  	format: 'table'

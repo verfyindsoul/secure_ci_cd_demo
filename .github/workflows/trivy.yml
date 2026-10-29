@@ -1,0 +1,21 @@
+name: DevSecOps Security Scan
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  trivy-scan:
+    name: Trivy Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.16.0
+        with:
+          scan-type: 'fs'
+          security-checks: 'vuln'
+          severity: 'CRITICAL,HIGH'
+          format: 'table'
